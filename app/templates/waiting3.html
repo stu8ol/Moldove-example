@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <head>
+    <meta http-equiv="refresh" content="15" />
+    </head>
+    <h1>Waiting for other players</h1>
+    <p>Welcome to Moldove. Give the game code below to the other players to join the game</p>
+    <h2>Game Code: {{ game_deets.game_code }}</h2>
+	<h1> {{ player_name }}, welcome to Moldove! </h1>
+	<p>Game will start when all players have joined</p>
+    <p>
+      <div class="row">
+      {% for plyr in game_deets.players %}
+        <div class="column">
+          <div style="width:57px; height:200px; font-size:80%; text-align:center; font-family:Optima; color: Ivory;">
+            <img src="{{ plyr.avatar_path }}" alt="{{ plyr.nickname }}" style="width:57px;height:200px;border:0;"/>
+            {{ plyr.nickname }}
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </p> 
+{% endblock %}
+
+	    
+

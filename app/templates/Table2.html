@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Moldove table - {{name}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		//set global constants & variable			
+		var checkedItems = new Array()
+		checkedItems.length = 0;
+		var imgDown = "120";
+		var imgUp = "150";
+		var imgDownSm = "90";
+		var imgUpSm = "110";
+
+		function swapImage(imgID) {
+			var theImage = document.getElementById(imgID);
+			var theState = theImage.height;
+
+			if(theState == imgDown) {
+				theImage.height = imgUp;
+				theImage.width = 100;
+			}
+			else {
+				theImage.height = imgDown;
+				theImage.width = 80;
+			};
+			getCheckedElements();
+		}
+		
+		function swapImageSm(imgID) {
+			var theImage = document.getElementById(imgID);
+			var theState = theImage.height;
+
+			if(theState == imgDownSm) {
+				theImage.height = imgUpSm;
+				theImage.width = 79;
+			}
+			else {
+				theImage.height = imgDownSm;
+				theImage.width = 60;
+			};
+			getCheckedElements();
+		}
+	
+	
+		function getCheckedElements() {
+			var imgArray = document.getElementsByName('checkboximg');
+			var imgArraySm = document.getElementsByName('checkboximgSm');
+			checkedItems.length = 0;
+
+			for(var i = 0; i < imgArray.length; i++) {
+				var tmp = imgArray[i];
+				if(tmp.height == imgUp) {
+				 	checkedItems.push(imgArray[i].id.toString());
+				}
+			}
+
+			for(var i = 0; i < imgArraySm.length; i++) {
+				var tmp = imgArraySm[i];
+				if(tmp.height == imgUpSm) {
+				 	checkedItems.push(imgArraySm[i].id.toString());
+				}
+			}
+			if (checkedItems.length == 0) {
+				document.getElementById('status-submit').innerHTML = "No cards to play?";
+			}
+			else { 
+				document.getElementById('status-submit').innerHTML = "Play selected cards";
+			};
+   		}
+   		
+   		function giveAdvice(advice) {
+			
+			var thePlayer = advice['player'];
+
+			if(thePlayer == "{{ pl }}") {
+				var theAdvice = advice['note'];
+			}
+			else {
+				var theAdvice = "Please wait...";
+			};
+			document.getElementById('advice').innerHTML = theAdvice;
+		}
+   
+		$(document).ready(function(){
+			
+		
+			// sending a connect request to the server.
+			var socket = io.connect();
+
+			socket.on('after connect', function(msg){
+				console.log('After connect', msg);
+				document.getElementById('message').innerHTML = msg['data'];
+			});
+		    
+			$('#status-submit').click(function(event){
+					var sel_str = write_thing();
+					socket.emit('status_update', {selection: sel_str, player:"{{pl}}"});
+			});
+			
+			socket.on('status_updated', function(msg){						
+				console.log('After connect', msg);
+				document.getElementById('message').innerHTML = msg['data'];
+				document.getElementById('ac_src').src = msg['game']['ac_src'];
+				document.getElementById('pile_size').innerHTML = msg['game']['pile_count'];
+				document.getElementById('deck_size').innerHTML = msg['game']['deck_count'];
+				{% for faces in pcs%}
+				  document.getElementById("hc{{faces.name}}").innerHTML = msg['game']['hc']['{{faces.name}}'];
+				  document.getElementById("bc{{faces.name}}").innerHTML = msg['game']['bc']['{{faces.name}}']; 
+				  {% for f in faces.cds%}
+				    document.getElementById("{{f.alt}}").src = msg['game']['sources']['{{f.alt}}']['src'];
+				  {% endfor %}
+			        {% endfor %}
+			        giveAdvice(msg['game']['advice'])	 
+			});
+			
+			socket.on('private_message', function(msg){
+				console.log('private', msg);
+				document.getElementById('private').innerHTML = msg['message'];
+			});
+			
+			socket.on('reload', function (data) {
+				history.go(0);
+				//location.reload();
+			});
+					
+			socket.on('redirect', function (data) {
+			    window.location = data.url;
+			});
+			
+			socket.on('redirect_go', function (data) {
+			    window.location = "{{ go_url }}";
+			});
+							
+		});
+		
+		
+		function write_thing(){
+			var for_py = "";
+			if(checkedItems.length != 0) {
+				for_py += checkedItems.toString();
+			} else {
+				for_py += "pick_up";
+			}
+			return for_py
+		}
+	</script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">  	
+<style type="text/css">
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto';
+}
+
+
+.user-name{
+	/*display:none;*/
+	height: 245px;
+	max-width: 52%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 5px;
+	background-color: #232423;
+	border-radius: 5px;
+	border: 1px solid;
+	-webkit-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	-moz-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	float: right;
+}
+
+.deck-card{
+	/*display:none;*/
+	height: 245px;
+	max-width: 23%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 5px;
+	background-color: #4a8a53;
+	border-radius: 5px;
+	border: 1px solid;
+	-webkit-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	-moz-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	float: left;
+}
+
+.player-hand{
+	/*display:none;*/
+	/*height: {{ sizes.hand }};*/
+	max-width: 100%;
+	margin-left: auto;
+	margin-right:auto;
+	padding-top: 5px;
+	background-color: #232423;
+	border-radius: 5px;
+	border: 1px solid;
+	-webkit-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	-moz-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	float:left
+}
+
+.blind-hand{
+	/*display:none;*/
+	height: 245px;
+	max-width: 25%;
+	margin-left: auto;
+	margin-right:auto;
+	padding-top: 5px;
+	background-color: #4a8a53;
+	border-radius: 5px;
+	border: 1px solid;
+	-webkit-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	-moz-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	float:left
+}
+
+.face-hand{
+	/*display:none;*/
+	height: 230px;
+	max-width: {{ sizes.player }};
+	margin-left: auto;
+	margin-right:auto;
+	padding-top: 5px;
+	background-color: #4a8a53;
+	border-radius: 5px;
+	border: 1px solid;
+	-webkit-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	-moz-box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	box-shadow: 4px 4px 5px 0px rgba(199,175,199,1);
+	float:left
+}
+		
+.column2 {
+	float: left;
+	padding: 30px;
+	margin-left: 30px;
+}
+
+h1 {
+	text-align: center;
+	color: Ivory;
+	font-family: "Roboto";
+	}
+h2 {
+	text-align: center;
+	color: Ivory;
+	font-family: "Roboto";
+	}
+	
+h3 {
+	text-align: left;
+	color: Ivory;
+	font-family: "Roboto";
+	}
+
+body{
+	margin:0;
+	padding:5px;
+	/*line-height: 1.5em;*/
+	background: #000000;
+	font-family: "Roboto";
+	}
+	
+p{
+	color: Ivory;
+	font-family:"Roboto"; 
+	font-size:16;
+	}
+
+/* Clearfix (clear floats) */
+.row::after {
+content: "";
+clear: both;
+display: table;
+margin-left: 30px;
+}
+
+.list-text {
+	font-size: 1.5em;
+	background-color: #e0c9c9;
+	color: white;
+}
+.online-list ul li {
+	cursor: pointer;
+}
+
+.card-img {
+	border: 5
+}
+
+</style>
+</head>
+<body>
+
+<h1>{{name}}</h1>
+
+<p id="private" style = "color:red"></p>
+<div class="container deck-card mt-3">
+	<h2>Active card</h2>
+	<p>
+		<img src="{{ac.src}}" id="ac_src" alt="Play anything!" width="85" height="128">
+		<img src="{{bc.src}}" alt="" width="85" height="128">
+	</p>
+	<p id="pile_size" style="margin:1px">{{ps.p}}</p>
+	<p id="deck_size" style="margin:1px">{{ps.d}}</p>
+</div>
+
+
+<div class="container user-name mt-3 "> 
+	<button  class="btn form-control btn-info" placeholder="PLAY" id="status-submit">Play selected cards</button>
+	<p id='message'></p>
+</div>
+
+
+<div class="container blind-hand mt-3">
+	<h2>Blind cards</h2>
+	<p>
+		{% for blc in bcs%}
+		<img id="{{blc.label}}" onclick="swapImageSm('{{blc.label}}')" name="checkboximgSm" src="{{blc.src}}" alt="" width="60" height="90">
+		{% endfor %}
+	</p>
+</div>
+
+
+<div class="container player-hand mt-3 ">
+	<p id='flag'></p>
+	<p id='flf'></p>
+	<h2 style="text-align:left;">Your hand</h2>
+	<p id="advice">{{ pw }}</p> 
+	<p>
+		{% for h in hand%}
+		<img id="{{h.label}}" onclick="swapImage('{{h.label}}')" name="checkboximg" src="{{h.src}}" alt="" width="80" height="120">
+		{% endfor %}
+	</p>
+</div>
+
+
+{% for faces in pcs%} 	
+<div class="container face-hand mt-3 ">
+    <div style="width:80%;height:100%;float:left">	
+	<p>{{faces.player}} - {{faces.name}}: Face up cards</p>
+	<p id="hc{{faces.name}}" style="margin:1px">{{faces.hc}}</p>
+	<p id="bc{{faces.name}}" style="margin:1px">{{faces.bc}}</p>
+	<p>
+		{% for f in faces.cds%}
+		<img id="{{f.alt}}" onclick="swapImageSm('{{f.alt}}')" name="checkboximgSm" src="{{f.src}}" alt="" width="60" height="90">
+		{% endfor %}
+	</p>
+    </div>	
+    <div style="width:15%;height:100%;float:right">
+        <img id="av{{faces.name}}" src="{{faces.avatar}}" alt="{{faces.name}}" style="max-width:100%;height:auto;">
+    </div>	
+</div>	
+{% endfor %}
+
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,13 @@
+{% extends "waiting2.html" %}
+
+{% block content2 %}
+    <form action="" method="post" novalidate>
+    
+        {{ formC.hidden_tag() }}
+        <p>
+            {{ formC.player_name.label }}<br>
+            {{ formC.player_name(size=32) }}
+        </p>
+        <p>{{ formC.submit() }}</p>
+    </form>
+{% endblock %}

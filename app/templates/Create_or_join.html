@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Create Game</h1>
+    <p>If you would like to start a new game, enter the number of players and click create. Must enter a number.</p>
+    <form action="" method="post" novalidate>
+    
+        {{ formC.hidden_tag() }}
+        <p>
+            {{ formC.noof_players.label }}<br>
+            {{ formC.noof_players(size=32) }}
+        </p>
+        <p>{{ formC.submit() }}</p>
+    </form> 
+    <h1>Join Game</h1>
+    <p>If you would like to join an existing game, enter the 6 letter game code below</p>
+    <form action="" method="post" novalidate>
+  
+        {{ formG.hidden_tag() }}
+        <p>
+            {{ formG.game_id.label }}<br>
+            {{ formG.game_id(size=32) }}
+        </p>
+        <p>{{ formG.submit() }}</p>
+        
+    </form>
+    <p><br></p>
+{% endblock %}

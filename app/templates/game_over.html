@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <head>
+          <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">-->
+	<style type="text/css">
+		.grid-container {
+		  display: grid;
+		  grid-template-columns: 1fr 1fr 01fr 1fr 1fr;
+		  grid-template-rows: auto auto auto auto auto;
+		  gap: 1px 1px;
+		  grid-template-areas: "Title Title Title Title Title" "Info Info Info Info Play-button" "gif2 gif2 av Gif1 Gif1" "winners winners winners winners winners" ". Loserboard Loserboard Loserboard .";
+		}
+
+		.Title { grid-area: Title;
+		font-family:"Roboto"; }
+
+		.Info { grid-area: Info;
+		font-family:"Roboto"; }
+
+		.Play-button { grid-area: Play-button;
+		font-family:"Roboto"; }
+
+		.av { grid-area: av;
+		font-size:100%; 
+		text-align:center; 
+		color:Ivory;
+		font-family:"Roboto"; }
+
+		.Gif1 { grid-area: Gif1;
+		vertical-align:center; }
+
+		.gif2 { grid-area: gif2;
+		vertical-align:center; }
+
+		.winners { grid-area: winners;
+		font-family:"Roboto"; }
+
+		.Loserboard { grid-area: Loserboard;
+		text-align:center;
+		float:right;
+		font-family:"Roboto"; }
+		
+	</style>
+    </head>
+
+
+<div class="grid-container">
+  <div class="Title">
+        <h1>{{shot}}</h1>
+  </div>
+  
+  <div class="Info">
+    <p>The game is complete! The loser now has to do a shot.</p>
+    <h3 style="text-align:left;">Loser: {{ game_deets.loser.nickname }}</h3>
+    <p>They must do a {{cap}} cap shot!</p>
+  </div>
+  
+  <div class="Play-button">
+    <form action="" method="post" novalidate>
+      {{ formA.hidden_tag() }}
+      <p>{{ formA.submit() }}</p>
+    </form> 
+  </div>
+  
+  <div class="av">
+    <img src="{{ game_deets.loser.avatar_path }}" alt="{{ game_deets.loser.nickname }}" style="width:150px;height:auto;border:0;"/>
+    {{ game_deets.loser.nickname }}
+  </div>
+  
+  <div class="Gif1"><iframe src="https://giphy.com/embed/xeXEpUVvAxCV2" width="200px" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p></p></div>
+  <div class="gif2"><iframe src="https://giphy.com/embed/xeXEpUVvAxCV2" width="200px" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p></p></div>
+ 
+  <div class="winners">
+    <h2>Non-losers...</h2>
+      {% for plyr in game_deets.winner%}
+      <div class="column">
+        <div style="width:57px; height:200px; font-size:100%; text-align:center; color:Ivory;">
+          <img src="{{ plyr.avatar_path }}" alt="{{ plyr.nickname }}" style="width:57px;height:200px;border:0;"/>
+          {{ plyr.nickname }}
+	</div>
+      </div>
+      {% endfor %}
+  </div>
+  
+  <div class="Loserboard">
+    <table class=tg" style="color:Ivory; text-align:center;border:1px solid Ivory;margin-left:auto;margin-right:auto;font-family:"Roboto";">
+      <thead>
+        <tr>
+          <th class="tg-urxo" colspan="2">Loser board</th>
+        </tr>
+        <tr>
+          <th class="tg-urxo">Name</th>
+          <th class="tg-urxo">Cap tally</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for plyr in lb%}
+        <tr>
+          <td class="tg-urxo">{{ plyr.name }}</td>
+          <td class="tg-urxo">{{ plyr.caps }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table> 
+  </div>
+</div>
+{% endblock %}
+
+	    
+

@@ -1,0 +1,258 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Moldove</title>
+      {% else %}
+      <title>Welcome to Moldove</title>
+      {% endif %}
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+      <script data-ad-client="ca-pub-5069500739929492" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+	<style type="text/css">
+	* {
+	box-sizing: border-box;
+	}
+
+	.column {
+	float: left;
+	width: 20%;
+	padding: 30px;
+	}
+
+	/* Clearfix (clear floats) */
+	.row::after {
+	content: "";
+	clear: both;
+	display: table;
+	}
+	
+	h1 {
+	text-align: center;
+	color: Ivory;
+	font-family: "Roboto";
+	}
+	h2 {
+	text-align: center;
+	color: Ivory;
+	font-family: "Roboto";
+	}
+	
+	h3 {
+	text-align: left;
+	color: Ivory;
+	font-family: "Roboto";
+	}
+	
+	#centered {
+  	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: 50%;
+	}
+	
+	body{
+	margin:0;
+	padding:5px;
+	/*line-height: 1.5em;*/
+	background: #000000;
+	font-family: "Roboto";
+	}
+	
+	p{
+	color: Ivory;
+	font-family: "Roboto"; 
+	font-size:16;
+	}
+	
+	b{font-size: 110%;}
+	em{color: red;}
+
+       
+	.button1 {
+		display:inline-block;
+		border:0.1em solid #FFFFFF;
+		border-radius:0.12em;
+		color:#FFFFFF;
+		padding:0.35em 1.2em;
+		text-align: center;
+		text-decoration: none;
+		text-transform:uppercase;
+		margin:7px 0.3em 0.3em 0;
+		cursor: pointer;
+		box-sizing: border-box;
+		font-family:'Roboto',sans-serif;
+		font-weight:300;
+		transition: all 0.2s;
+		float: right;
+	}
+
+	.button1:hover {
+		color:#000000;
+		background-color:#FFFFFF;
+	}
+
+	@media all and (max-width:30em){
+		.button1{
+		display:block;
+		margin:0.4em auto;
+	 }
+	} 
+	
+	
+	.button2 {
+		display:inline-block;
+		border:0.1em solid #FFFFFF;
+		border-radius:0.12em;
+		color:#FFFFFF;
+		padding:0.35em 1.2em;
+		text-align: center;
+		text-decoration: none;
+		text-transform:uppercase;
+		margin:10px 10px 10px 10px;
+		cursor: pointer;
+		box-sizing: border-box;
+		font-family:'Roboto',sans-serif;
+		font-weight:300;
+		font-size:20px;
+		transition: all 0.2s;
+		float:right;
+	}
+
+	.button2:hover {
+		color:#000000;
+		background-color:#FFFFFF;
+	}
+
+	@media all and (max-width:30em){
+		.button2{
+		display:block;
+		margin:0.4em auto;
+	 }
+	} 
+
+	#topsection{
+	background: #232423;
+	min-height: 50px; /*Height of top section*/
+	font-family: "Roboto";
+	color: Ivory;
+	margin-top: 5px;
+	}
+
+	#topsection h1{
+	margin: 5px;
+	padding-top: 10px;
+	}
+
+	#contentwrapper{
+	float: left;
+	width: 100%;
+	}
+
+	#contentcolumn{
+	margin: 20px 230px 150px 230px; /*Margins for content column. Should be "0 RightColumnWidth 0 LeftColumnWidth*/
+	background-color : #232423;
+	width : 680px;
+	margin-left : auto;
+	margin-right : auto;
+	}
+
+	#leftcolumn{
+	float: left;
+	width: 200px; /*Width of left column*/
+	margin-left: -100%;
+	margin-top: 20px;
+	background: #232423;
+	}
+
+	#rightcolumn{
+	float: left;
+	width: 200px; /*Width of right column*/
+	margin-left: -200px; /*Set left marginto -(RightColumnWidth)*/
+	margin-top: 20px;
+	background: #232423;
+	}
+
+	#footer{
+	clear: left;
+	width: 100%;
+	background: black;
+	color: #FFF;
+	text-align: center;
+	padding: 4px 0;
+	}
+
+	.innertube{
+
+	margin: 30px; /*Margins for inner DIV inside each column (to provide padding)*/
+	padding-top: 20px;
+	margin-top: 0px;
+	 /*height : 1800px;*/
+	}
+
+
+	.innertubetop{
+	margin: 20px; /*Margins for inner DIV inside each column (to provide padding)*/
+	margin-top: 20px;
+	}
+	
+	.tg  {border-collapse:collapse;border-spacing:0;float:center;}
+	.tg td{border-style:solid;border-width:3px;font-family:"Roboto", sans-serif;font-size:14px;overflow:hidden;
+	  padding:10px 5px;word-break:normal; color:Ivory;text-align:center;}
+	.tg th{border-style:solid;border-width:3px;font-family:"Roboto", sans-serif;font-size:14px;font-weight:normal;
+	  overflow:hidden;padding:10px 5px;word-break:normal;color:Ivory; text-align:center;}
+	.tg .tg-urxo{border-color:#ffffff;color:#ffffff;text-align:center;vertical-align:top}
+		
+	</style>
+
+
+    </head>
+    <body>
+    	<div id="topsection">
+    	  <div class="innertubetop">
+    	  <p style="font-size:40px; float:left; margin-top:auto; margin-bottom:auto;"><b>MOLDOVE<p>
+            <a href="{{pl}}" class="button1">Start Playing!{{c1}}</a>
+            {% if current_user.is_anonymous %}
+	    <a href="{{ url_for('login') }}"  class="button1">Login</a>
+	    {% else %}
+    	    <a href="{{ url_for('logout') }}" class="button1">Logout</a>
+	    <a href="{{ url_for('user', username=current_user.username) }}" class="button1">Profile</a>
+	    {% endif %}
+            <a href="/rules" class="button1">Rules</a> 
+            <a href="/index" class="button1">Home</a>
+    	  </div>
+    	</div>
+
+	<hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li style="color:Ivory">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        
+        <div id="maincontainer" style = "min-width : 1000px;"> <!-- this will be sum of width of all three columns-->
+        <div id="contentwrapper">
+	  <div id="contentcolumn">
+	    <div class="innertube">{% block content %}{% endblock %}</div>
+	  </div>
+	</div>
+
+	<div id="leftcolumn">
+	  <div class="innertube"><b>Left Column: <em>200px</em></b></div>
+	</div>
+
+	<div id="rightcolumn">
+	  <div class="innertube"><b>Right Column: <em>200px</em></b></div>
+	</div>
+ 	</div>
+        <div id="footer">
+        <p>moldove.life encourages the responsible and safe consumption of alcohol. Never exceed more than a 5 cap shot.<p>
+        </div>
+    </body>
+</html>
+
+
